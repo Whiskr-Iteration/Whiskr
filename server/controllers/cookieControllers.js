@@ -3,6 +3,9 @@ const model = require('../models/models.js');
 const cookieControllers = {};
 
 cookieControllers.setCookie = async (req, res, next) => {
+  if (res.locals.googleUser) {
+    return next();
+  }
   const email = req.body.email;
   try {
     const user = await model.User.findOne({ email });

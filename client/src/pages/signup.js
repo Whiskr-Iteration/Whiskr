@@ -3,10 +3,14 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // NOTE: JS library used to make HTTP requests from a browser; used here to fetch data (pins) from Atlas db
 
-const Signup = () => {
+const Signup = ({googleUser}) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const profileTypeRef = useRef();
+
+
+  console.log('googleUser in signup', googleUser);
+  
 
   // Response/error from server
   const [res, setRes] = useState(null);
@@ -44,9 +48,8 @@ const Signup = () => {
     <div className='signup-page'>
       <form className='signup-form' onSubmit={handleSubmit}>
         <h3>Sign up</h3>
-
-        <input type='email' placeholder='email' ref={emailRef} />
-        <input type='password' placeholder='password' ref={passwordRef} />
+        <input type='email' placeholder='email' ref={emailRef} defaultValue={googleUser ? googleUser.googleUser.email : ""} />
+        <input type='password' placeholder='password' ref={passwordRef} defaultValue={googleUser ? googleUser.googleUser.password : ""}/>
         <select ref={profileTypeRef}>
           <option value='Adopter'>Adopt a cat</option>
           <option value='Cat'>Put a cat up for adoption</option>

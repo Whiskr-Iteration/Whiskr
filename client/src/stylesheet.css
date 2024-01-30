@@ -6,30 +6,34 @@ body::before {
   right: 0;
   bottom: 0;
   left: 0;
-  background: black;
-  opacity: 0.5;
+  /* background: black;
+  opacity: 0.5; */
   z-index: -1;
 }
 
 body {
   font-size: x-large;
   margin: 0;
-  color: white;
-  text-shadow: 2px 0 0 #000, 0 -1px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
+  color: black;
+  //text-shadow: 0.5px 0 0 #000, 0 0.5px 0 #000, 0 0.5px 0 #000, 0.5px 0 0 #000;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-size: cover;
   background-image: url('../assets/cat-wallpaper.png');
 }
 
 .navbar {
+  background: white;
+  /* padding-bottom: 100px; */
   h1 {
     margin: 20px;
+    color: #f4496f;
   }
   a {
-    color: white;
+    color: #000;
     text-decoration: none;
     font-weight: bolder;
   }
@@ -40,7 +44,7 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(rgb(21, 21, 21), rgba(0, 0, 0, 0));
+  //background: linear-gradient(rgba(21, 21, 21, 0.7), rgba(0, 0, 0, 0));
 }
 
 .navbar-right {
@@ -115,25 +119,37 @@ select {
 /* --- SPECIFIC PAGES --- */
 /* HOME PAGE */
 .slogan-signup-login-container {
+  h1 {
+    font-size:48px;
+  }
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 75vh;
+  background: #fdfeff;
+  border-radius: 8px;
+  height: 400px;
+  width: 800px;
+  margin: auto;
+  margin-top: 150px;
 }
+
 .signup-login-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   button {
     height: 50px;
-    width: 170px;
+    width: 250px;
     font-size: 21px;
     border-radius: 30px;
     /* Gradient Background */
-    background: linear-gradient(to bottom, #4cb8b8, #0184b8);
+    background: #f4496f;
     /* Text Color */
     color: #fff;
   }
   button:hover {
-    background: linear-gradient(to bottom, #307676, #005070);
+    background: #f4496f;
   }
 }
 
@@ -369,4 +385,8 @@ select {
   font-size: 16px;
   margin-top: 8px;
   margin-bottom: 30px;
+}
+
+.googleOauthButton {
+  margin: 30px;
 }

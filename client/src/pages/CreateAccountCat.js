@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const CreateAccountCat = () => {
+const CreateAccountCat = (googleUser) => {
   const emailRef = useRef();
   const catNameRef = useRef();
   const catBreedRef = useRef();
@@ -13,6 +13,7 @@ const CreateAccountCat = () => {
   const aboutMeRef = useRef();
   const profilePicRef = useRef();
   const navigate = useNavigate();
+  const googleUserEmail = googleUser.googleUser.userEmail
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -42,7 +43,7 @@ const CreateAccountCat = () => {
     <form className='create-profile-page' onSubmit={handleSubmit}>
       <h3>Create a profile for your cat!</h3>
       <label>Email:</label>
-      <input type='email' placeholder='Email' ref={emailRef} />
+      <input type='email' placeholder='Email' ref={emailRef} defaultValue={googleUserEmail ? googleUserEmail : ""}/>
       <label>Name:</label>
       <input type='name' placeholder='Kitty name' ref={catNameRef} />
       <label>Type of cat:</label>
