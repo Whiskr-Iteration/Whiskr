@@ -1,16 +1,15 @@
-import React from 'react';
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // NOTE: JS library used to make HTTP requests from a browser; used here to fetch data (pins) from Atlas db
+import React from "react";
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios"; // NOTE: JS library used to make HTTP requests from a browser; used here to fetch data (pins) from Atlas db
 
-const Signup = ({googleUser}) => {
+const Signup = (googleUser) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const profileTypeRef = useRef();
+  const googleCredentials = googleUser;
 
-
-  console.log('googleUser in signup', googleUser);
-  
+  console.log("googleUser in signup", googleUser);
 
   // Response/error from server
   const [res, setRes] = useState(null);
@@ -18,7 +17,7 @@ const Signup = ({googleUser}) => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newUser = {
@@ -29,41 +28,53 @@ const Signup = ({googleUser}) => {
 
     // Make POST request to Atlas DB to add new user
     try {
-      const userResponse = await axios.post('/signup', newUser);
+      const userResponse = await axios.post("/signup", newUser);
 
-      console.log('* New user profile created, _id: ', userResponse.data.id);
-      console.log('* New user profile created, _id: ', typeof userResponse.data.id);
-      console.log('profileTypeRef', profileTypeRef.current.value);
-      
+      console.log("* New user profile created, _id: ", userResponse.data.id);
+      console.log(
+        "* New user profile created, _id: ",
+        typeof userResponse.data.id
+      );
+      console.log("profileTypeRef", profileTypeRef.current.value);
 
       setRes(
         `User ID Created: ${userResponse.data}.  Please proceed to log in page.`
       );
       setErr(null);
-      navigate('/login');
+      navigate("/login");
     } catch (err) {
-      console.log('* Error from server: ', err.response.data);
+      console.log("* Error from server: ", err.response.data);
       setRes(null);
       setErr(err.response.data);
     }
   };
 
   return (
-    <div className='signup-page'>
-      <form className='signup-form' onSubmit={handleSubmit}>
+    <div className="signup-page">
+      <form className="signup-form" onSubmit={handleSubmit}>
         <h3>Sign up</h3>
-        <input type='email' placeholder='email' ref={emailRef} defaultValue={googleUser ? googleUser.googleUser.email : ""} />
-        <input type='password' placeholder='password' ref={passwordRef} defaultValue={googleUser ? googleUser.googleUser.password : ""}/>
+        <input
+          type="email"
+          placeholder="email"
+          ref={emailRef}
+          defaultValue={googleCredentials ? googleCredentials.email : ""}
+        />
+        <input
+          type="password"
+          placeholder="password"
+          ref={passwordRef}
+          defaultValue={googleCredentials ? googleCredentials.password : ""}
+        />
         <select ref={profileTypeRef}>
-          <option value='Adopter'>Adopt a cat</option>
-          <option value='Cat'>Put a cat up for adoption</option>
+          <option value="Adopter">Adopt a cat</option>
+          <option value="Cat">Put a cat up for adoption</option>
         </select>
 
         <button>Register</button>
       </form>
 
-      {res && <p className='response-text'>{JSON.stringify(res)}</p>}
-      {err && <p className='error-text'>{err}</p>}
+      {res && <p className="response-text">{JSON.stringify(res)}</p>}
+      {err && <p className="error-text">{err}</p>}
     </div>
   );
 };
