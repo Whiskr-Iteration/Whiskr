@@ -12,7 +12,7 @@ const Login = (googleUser) => {
   const [err, setErr] = useState(null);
   const googleCredentials = googleUser;
   console.log('ggoel user in login.js', googleUser)
-  // console.log('googleCredentials in login.js', googleCredentials)
+  console.log('googleCredentials in login.js', googleCredentials)
 
   const navigate = useNavigate();
 

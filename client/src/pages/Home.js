@@ -14,10 +14,11 @@ const Home = ({handleGoogleUser}) => {
 
   useEffect(() => {
     // we are sending a post request to /login passing in the ID Token
+    if (googleIdToken) {
     axios.post('/login', { googleIdToken })
     .then(response => {
-      console.log(response.data, 'response in home.js')
       handleGoogleUser(response.data);
+
       const { hasAdopterOrCatProfile, profileType } = response.data;
       if (profileType === undefined) {
         navigate('/signup');
@@ -35,6 +36,9 @@ const Home = ({handleGoogleUser}) => {
       console.error(error, 'error in Home.js for google Oauth');
       // navigate('/signup');
     })
+  } else {
+    setGoogleIdToken(null);
+  }
   }, [googleIdToken])
 
   return (

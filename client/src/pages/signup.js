@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // NOTE: JS library used to make HTTP requests from a browser; used here to fetch data (pins) from Atlas db
 
@@ -7,9 +7,26 @@ const Signup = (googleUser) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const profileTypeRef = useRef();
-  const googleCredentials = googleUser;
+  // const [googleCredentials, setGoogleCredentials] = useState(null);
 
-  console.log("googleUser in signup", googleUser);
+  const [googleEmail, setGoogleEmail] = useState(null);
+  const [googlePassword, setGooglePassword] = useState(null);
+  
+  
+
+
+useEffect(() => {
+  if (googleUser) {
+    console.log(googleUser.googleUser.googleUser, 'googleUser in signup.js')
+    setGoogleEmail(googleUser.googleUser.googleUser.email);
+    setGooglePassword(googleUser.googleUser.googleUser.password)
+
+    console.log(googleEmail, 'googleEmail');
+    console.log(googlePassword, 'googlePassword');
+  } 
+}, [googleUser]);
+
+
 
   // Response/error from server
   const [res, setRes] = useState(null);
@@ -26,6 +43,8 @@ const Signup = (googleUser) => {
       profileType: profileTypeRef.current.value,
     };
 
+    // setGoogleCredentials(null);
+
     // Make POST request to Atlas DB to add new user
     try {
       const userResponse = await axios.post("/signup", newUser);
@@ -40,12 +59,16 @@ const Signup = (googleUser) => {
       setRes(
         `User ID Created: ${userResponse.data}.  Please proceed to log in page.`
       );
-      setErr(null);
+      // setErr(null);
       navigate("/login");
     } catch (err) {
       console.log("* Error from server: ", err.response.data);
-      setRes(null);
+      if(error.response && error.response.data) {
+      // setRes(null);
       setErr(err.response.data);
+    } else {
+      setErr("Unknown Errror Post")
+      }
     }
   };
 
@@ -57,13 +80,13 @@ const Signup = (googleUser) => {
           type="email"
           placeholder="email"
           ref={emailRef}
-          defaultValue={googleCredentials ? googleCredentials.email : ""}
+          defaultValue={googleEmail ? googleEmail: ""}
         />
         <input
           type="password"
           placeholder="password"
           ref={passwordRef}
-          defaultValue={googleCredentials ? googleCredentials.password : ""}
+          defaultValue={googlePassword ? googlePassword : ""}
         />
         <select ref={profileTypeRef}>
           <option value="Adopter">Adopt a cat</option>

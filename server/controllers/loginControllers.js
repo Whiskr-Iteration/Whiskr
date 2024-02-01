@@ -18,7 +18,7 @@ loginControllers.verifyUser = async (req, res, next) => {
     }
 
     const { email, password } = req.body;
-
+    console.log(email, password)
     // Handle missing fields
     if ((!email, !password)) {
       const missingFieldsErr = {
