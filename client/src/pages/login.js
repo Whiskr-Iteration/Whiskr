@@ -3,16 +3,13 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // NOTE: JS library used to make HTTP requests from a browser; used here to fetch data (pins) from Atlas db
 
-const Login = (googleUser) => {
+const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
   // Response/error from server
   const [res, setRes] = useState(null);
   const [err, setErr] = useState(null);
-  const googleCredentials = googleUser;
-  console.log('ggoel user in login.js', googleUser)
-  console.log('googleCredentials in login.js', googleCredentials)
 
   const navigate = useNavigate();
 
@@ -67,8 +64,8 @@ const Login = (googleUser) => {
       <form className='login-form' onSubmit={handleSubmit}>
         <h3>Log In</h3>
 
-        <input type='email' placeholder='email' ref={emailRef} defaultValue={googleCredentials ? googleCredentials.email : ""} />
-        <input type='password' placeholder='password' ref={passwordRef} defaultValue={googleCredentials ? googleCredentials.password : ""} />
+        <input type='email' placeholder='email' ref={emailRef} />
+        <input type='password' placeholder='password' ref={passwordRef} />
 
         <button type='submit'>Log in</button>
       </form>

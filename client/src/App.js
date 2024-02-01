@@ -14,9 +14,10 @@ import CatCardsPage from './pages/CatsCardsPage';
 
 function App() {
   const [googleUser, setGoogleUser] = useState(null);
-  console.log(googleUser, 'googleUser');
+  console.log(googleUser, 'googleUser in app.js');
 
   const handleGoogleUser = (data) => {
+    console.log(data, 'data in app.js')
     setGoogleUser(data);
   }
   return (
@@ -26,7 +27,7 @@ function App() {
         <div className='container'>
           <Routes>
             <Route className='signup-link' path='/' element={<Home handleGoogleUser={handleGoogleUser}/>} />
-            <Route path='/login' element={<Login googleUser={googleUser} />} />
+            <Route path='/login' element={<Login />} />
             <Route path='/about' element={<About />} />
             <Route path='/signup' element={<Signup googleUser={googleUser}/>} />
             <Route path='/createAccountAdopter' element={<CreateAccountAdopter googleUser={googleUser} />}

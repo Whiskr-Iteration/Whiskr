@@ -8,6 +8,9 @@ router.post(
   loginControllers.verifyUser,
   loginControllers.verifyAdopterOrCat,
   cookieControllers.setCookie, (req, res) => {
+    if (res.locals.googleUser) {
+      return res.status(200).json(res.locals.googleUser);
+    }
     return res.status(200).json(res.locals);
   }
 );
