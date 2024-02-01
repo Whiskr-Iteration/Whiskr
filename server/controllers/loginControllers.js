@@ -9,17 +9,18 @@ loginControllers.verifyUser = async (req, res, next) => {
   // console.log(req.body.googleIdToken, 'request.params in verifyUser');
   try {
     let decoded;
-    if (req.body.googleIdToken) {
-      // Verify the ID Token
-      // console.log(req.body.googleIdToken);
-      decoded = jwtDecode(req.body.googleIdToken);
+    if (req.body.googleOauth) {
+
+      const { googleIdToken, profileType } = req.body.googleOauth;
+
+      decoded = jwtDecode(googleIdToken);
       req.body.email = decoded.email;
       req.body.password = decoded.sub;
+      req.body.profileType = profileType;
     }
 
-    const { email, password } = req.body;
-    console.log(email, password)
-    // Handle missing fields
+    const { email, password, profileType } = req.body;
+
     if ((!email, !password)) {
       const missingFieldsErr = {
         log: "Express error handler caught loginControllers.verifyUser error",
@@ -31,14 +32,21 @@ loginControllers.verifyUser = async (req, res, next) => {
 
     // Find user in db
     const foundUser = await Profile.User.findOne({ email: email });
+    let foundGoogleUser;
     if (foundUser) console.log("  - User found in db: ", foundUser);
-    else if (!foundUser && decoded) {
-      res.locals.googleUser = {
-        email,
-        password,
-      };
-      return next();
-    } else {
+    else if (!foundUser && req.body.googleOauth){
+      const newUser = new Profile.User({
+        email: email,
+        password: password,
+        profileType: profileType,
+      });
+      const registeredUser = await newUser.save();
+      console.log('Googleuser successfully created in DB');
+      res.locals._id = registeredUser._id;
+      foundGoogleUser = await Profile.User.findOne({email: email});
+      if (foundGoogleUser) console.log(" - Google User found in db: ", foundGoogleUser)
+    } 
+    else {
       const userDneErr = {
         log: "Express error handler caught loginControllers.verifyUser error",
         status: 400,
@@ -46,14 +54,26 @@ loginControllers.verifyUser = async (req, res, next) => {
       };
       return next(userDneErr);
     }
-
+    console.log('hi this is the users password', password);
     // Compare user entered password w/ password in db
-    const validPassword = await bcrypt.compare(password, foundUser.password);
+    let passwordFind;
+    if (foundGoogleUser) {
+      passwordFind = foundGoogleUser.password;
+    } else {
+      passwordFind = foundUser.password
+    }
+    const validPassword = await bcrypt.compare(password, passwordFind);
+    console.log('valid password? ', validPassword)
     if (validPassword) {
-      console.log("  - Valid passowrd entered: ", foundUser.password);
+      console.log("  - Valid passowrd entered: ", passwordFind);
       // Store email and account type to be passed on
-      res.locals.userEmail = foundUser.email;
-      res.locals.profileType = foundUser.profileType;
+      if (foundGoogleUser) {
+        res.locals.userEmail = foundGoogleUser.email;
+        res.locals.profileType = foundGoogleUser.profileType
+      } else {
+        res.locals.userEmail = foundUser.email;
+        res.locals.profileType = foundUser.profileType;
+      } 
       return next();
     } else {
       const invalidPasswordErr = {
@@ -70,9 +90,6 @@ loginControllers.verifyUser = async (req, res, next) => {
 
 // Verify if the logged in user has an Adopter profile or Cat profile
 loginControllers.verifyAdopterOrCat = async (req, res, next) => {
-  if (res.locals.googleUser) {
-    return next();
-  }
   console.log(
     "* Handling verifying if user has created an adopter profile or cat profile yet..."
   );

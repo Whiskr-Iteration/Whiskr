@@ -2,33 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Signup = ({googleUser}) => {
+const Signup = ({emailPrefill, setEmailPrefill}) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const profileTypeRef = useRef();
 
-  const [googleEmail, setGoogleEmail] = useState(null);
-  const [googlePassword, setGooglePassword] = useState(null);
   const [res, setRes] = useState(null);
   const [err, setErr] = useState(null);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (googleUser) {
-      console.log(googleUser, 'googleUserinSignup')
-      setGoogleEmail(googleUser.email);
-      setGooglePassword(googleUser.password);
-    }
-  }, [googleUser]);
-
-  useEffect(() => {
-    if (res) {
-      // Reset values when the form is submitted
-      setGoogleEmail('');
-      setGooglePassword('');
-    }
-  }, [res]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,9 +32,13 @@ const Signup = ({googleUser}) => {
       setRes(
         `User ID Created: ${userResponse.data}.  Please proceed to the login page.`
       );
-      // Clear the form values directly, without using a separate state
-      setGoogleEmail('');
-      setGooglePassword('');
+      setEmailPrefill(newUser.email)
+      if (newUser.profileType === 'Cat') {
+        navigate('/create-account-cat');
+      } else if (newUser.profileType === 'Adopter') {
+        navigate('/createAccountAdopter');
+      }
+
     } catch (error) {
       console.log("* Error from the server: ", error.response?.data || "Unknown Error Post");
       setErr(error.response?.data || "Unknown Error Post");
@@ -72,15 +59,11 @@ const Signup = ({googleUser}) => {
           type="email"
           placeholder="email"
           ref={emailRef}
-          value={googleEmail || ''}
-          onChange={(e) => setGoogleEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="password"
           ref={passwordRef}
-          value={googlePassword || ''}
-          onChange={(e) => setGooglePassword(e.target.value)}
         />
         <select ref={profileTypeRef}>
           <option value="Adopter">Adopt a cat</option>

@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // NOTE: JS library used to make HTTP requests from a browser; used here to fetch data (pins) from Atlas db
 
-const Login = () => {
+const Login = ({setEmailPrefill}) => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -26,17 +26,18 @@ const Login = () => {
       const loginRes = await axios.post('/login', userCredentials);
 
       console.log('* Login response from server: ', loginRes);
-      setRes(`User has created an Adopter or Cat Profile: ${loginRes.data}.`);
+      setRes(`User has created an Adopter or Cat Profile: ${loginRes.data.hasAdopterOrCatProfile}.`);
       setErr(null);
 
       // If the user has not created an Adopter or Cat profile yet...
-      if (!loginRes.data) {
+      if (!loginRes.data.hasAdopterOrCatProfile) {
         console.log('* User has not created an adopter or cat profile yet');
         // Navigate to the create Adopter or create Cat Profile page depending on the user's selection when they registered their account
         const userAccountType = await axios.post(
           '/login/getAccountType',
           userCredentials
         );
+        setEmailPrefill(loginRes.data.userEmail);
         console.log('* User account type: ', userAccountType.data);
         if (userAccountType.data === 'Adopter')
           navigate('/CreateAccountAdopter');

@@ -13,26 +13,20 @@ import AdopterCardsPage from './pages/AdopterCardsPage';
 import CatCardsPage from './pages/CatsCardsPage';
 
 function App() {
-  const [googleUser, setGoogleUser] = useState(null);
-  console.log(googleUser, 'googleUser in app.js');
-
-  const handleGoogleUser = (data) => {
-    console.log(data, 'data in app.js')
-    setGoogleUser(data);
-  }
+  const [emailPrefill, setEmailPrefill] = useState(null);
   return (
     <div className='app'>
       <BrowserRouter>
         <Navbar />
         <div className='container'>
           <Routes>
-            <Route className='signup-link' path='/' element={<Home handleGoogleUser={handleGoogleUser}/>} />
-            <Route path='/login' element={<Login />} />
+            <Route className='signup-link' path='/' element={<Home emailPrefill={emailPrefill} setEmailPrefill={setEmailPrefill}/>} />
+            <Route path='/login' element={<Login emailPrefill={emailPrefill} setEmailPrefill={setEmailPrefill} />} />
             <Route path='/about' element={<About />} />
-            <Route path='/signup' element={<Signup googleUser={googleUser}/>} />
-            <Route path='/createAccountAdopter' element={<CreateAccountAdopter googleUser={googleUser} />}
+            <Route path='/signup' element={<Signup emailPrefill={emailPrefill} setEmailPrefill={setEmailPrefill} />} />
+            <Route path='/createAccountAdopter' element={<CreateAccountAdopter emailPrefill={emailPrefill} setEmailPrefill={setEmailPrefill} />}
             />
-            <Route path='/create-account-cat' element={<CreateAccountCat googleUser={googleUser} />} />
+            <Route path='/create-account-cat' element={<CreateAccountCat emailPrefill={emailPrefill} setEmailPrefill={setEmailPrefill} />} />
             <Route path='/AdopterCardsPage' element={<AdopterCardsPage />} />
             <Route path='/CatsCardsPage' element={<CatCardsPage />} />
           </Routes>

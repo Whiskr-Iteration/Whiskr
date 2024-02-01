@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const CreateAccountCat = (googleUser) => {
+const CreateAccountCat = ({ setEmailPrefill, emailPrefill }) => {
   const emailRef = useRef();
   const catNameRef = useRef();
   const catBreedRef = useRef();
@@ -13,7 +13,6 @@ const CreateAccountCat = (googleUser) => {
   const aboutMeRef = useRef();
   const profilePicRef = useRef();
   const navigate = useNavigate();
-  const googleUserEmail = googleUser.googleUser.userEmail
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -26,7 +25,7 @@ const CreateAccountCat = (googleUser) => {
       aboutMe: aboutMeRef.current.value,
       imageUrl: 'https://i.imgur.com/7F5mhPp.gif',
     };
-
+    setEmailPrefill(null);
     try {
       const catResponse = await axios.post('/login/createCatProfile', newCat);
 
@@ -43,7 +42,7 @@ const CreateAccountCat = (googleUser) => {
     <form className='create-profile-page' onSubmit={handleSubmit}>
       <h3>Create a profile for your cat!</h3>
       <label>Email:</label>
-      <input type='email' placeholder='Email' ref={emailRef} defaultValue={googleUserEmail ? googleUserEmail : ""}/>
+      <input type='email' placeholder='Email' ref={emailRef} defaultValue={emailPrefill ? emailPrefill : ''}/>
       <label>Name:</label>
       <input type='name' placeholder='Kitty name' ref={catNameRef} />
       <label>Type of cat:</label>

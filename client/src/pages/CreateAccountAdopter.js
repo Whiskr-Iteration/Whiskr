@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const CreateAccountAdopter = (googleUser) => {
+const CreateAccountAdopter = ({setEmailPrefill, emailPrefill}) => {
   const emailRef = useRef();
   const nameRef = useRef();
   const aboutMeRef = useRef();
@@ -13,7 +13,7 @@ const CreateAccountAdopter = (googleUser) => {
   const professionRef = useRef();
   const experienceRef = useRef();
   const navigate = useNavigate();
-  const googleUserEmail = googleUser.googleUser.userEmail;
+
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -27,6 +27,7 @@ const CreateAccountAdopter = (googleUser) => {
       profession: professionRef.current.value,
       experience: experienceRef.current.value,
     };
+    setEmailPrefill(null);
 
     console.log('* Profile to be added to db: ', newAdopter);
 
@@ -53,7 +54,7 @@ const CreateAccountAdopter = (googleUser) => {
       <form className='create-profile-page' onSubmit={handleSubmit}>
         <h3>Create your adopter profile!</h3>
         <label>Email: </label>
-        <input type='email' placeholder='email' ref={emailRef} defaultValue={googleUserEmail ? googleUserEmail : ""} />
+        <input type='email' placeholder='email' ref={emailRef} defaultValue={emailPrefill ? emailPrefill : ''}/>
         <label>Name: </label>
         <input type='text' placeholder='full name' ref={nameRef} />
         <label>About Me: </label>
