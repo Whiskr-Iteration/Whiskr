@@ -61,11 +61,16 @@ const Signup = ({emailPrefill, setEmailPrefill}) => {
       setRes(
         `User ID Created: ${userResponse.data._id}.  Please proceed to the login page.`
       );
+
+      if (userResponse.data.hasAdopterOrCatProfile) {
+        console.log('ALREADY HAVE A PROFILE')
+        navigate('/login');
+      }
       setEmailPrefill(userResponse.data.userEmail);
       console.log(userResponse, 'userResponse');
-      if (userResponse.data.profileType === 'Cat') {
+      if (userResponse.data.profileType === 'Cat' && userResponse.data.hasAdopterOrCatProfile === false) {
         navigate('/create-account-cat');
-      } else if (userResponse.data.profileType === 'Adopter') {
+      } else if (userResponse.data.profileType === 'Adopter' && userResponse.data.hasAdopterOrCatProfile === false) {
         navigate('/createAccountAdopter');
       }
 
@@ -74,12 +79,6 @@ const Signup = ({emailPrefill, setEmailPrefill}) => {
       setErr(error.response?.data || "Unknown Error Post");
     }
   };
-
-  // useEffect(() => {
-  //   if (res) {
-  //     navigate("/login");
-  //   }
-  // }, [res, navigate]);
 
   return (
     <>

@@ -10,14 +10,10 @@ loginControllers.verifyUser = async (req, res, next) => {
   try {
     // creating a decoded variable in case we are handling a google user
     let decoded;
-    console.log("inside of try")
     // checking if googleOauth property has been passed in to the body object
     if (req.body.googleOauth) {
       // destructuring googleIdToken and Profile type from googleOauth Object
-      console.log("profileType")
       const { googleIdToken, profileType } = req.body.googleOauth;
-      console.log("after profileType", profileType)
-
       // decoding the googleIdToken from above
       decoded = jwtDecode(googleIdToken);
       // setting email and password properties to req.body object so that
@@ -25,7 +21,6 @@ loginControllers.verifyUser = async (req, res, next) => {
       req.body.email = decoded.email;
       req.body.password = decoded.sub;
       req.body.profileType = profileType;
-      console.log(req.body, 'req.body for googelOauth')
     }
 
     if (!req.body.profileType) {
@@ -33,7 +28,6 @@ loginControllers.verifyUser = async (req, res, next) => {
     }
     // destructuring email, password, and profile type from req.body
     const { email, password, profileType } = req.body;
-    console.log('line 36')
     // if missing fields, send back error
     if ((!email, !password)) {
       const missingFieldsErr = {
@@ -43,26 +37,28 @@ loginControllers.verifyUser = async (req, res, next) => {
       };
       return next(missingFieldsErr);
     }
-    console.log('line 46')
     // Find user in db
     const foundUser = await Profile.User.findOne({ email: email });
-    console.log('line 49')
     // in case it's a google user, we declare a foundGoogleUser obj
     let newUser = null;
-
     // if regular login user is found, we log it
     if (foundUser) console.log("  - User found in db: ", foundUser);
     // Creating a new user, setting the email, password, and 
     // profiletype from req.body.googleOauth
-    else if (!foundUser){
+    else if (!foundUser && !profileType || profileType === '') {
+      const userDneErr = {
+        log: "Express error handler caught loginControllers.verifyUser error",
+        status: 400,
+        message: { err: "Email does not exist in db" },
+      };
+      return next(userDneErr);
+    } else if (!foundUser) {
       const newUserToDB = new Profile.User({
         email: email,
         password: password,
         profileType: profileType,
       });
-      console.log('line 63')
 
-      
       // if googleUser got registered as expected, save it to DB
       const registeredUser = await newUserToDB.save();
       console.log('User successfully created in DB');

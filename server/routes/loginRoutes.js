@@ -11,6 +11,7 @@ router.post(
     if (res.locals.googleUser) {
       return res.status(200).json(res.locals.googleUser);
     }
+    console.log(res.locals, 'res.locals inside of router.post in loginRoutes')
     return res.status(200).json(res.locals);
   }
 );
