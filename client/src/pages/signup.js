@@ -81,9 +81,10 @@ const Signup = ({emailPrefill, setEmailPrefill}) => {
   };
 
   return (
-    <>
+    <div className="signup-page">
+      <div className="signup-form">
       {googleIdToken ? (
-        <form className="signup-form" onSubmit={handleProfile}>
+        <form onSubmit={handleProfile}>
           <select ref={profileTypeRef}>
             <option value="Adopter">Adopt a cat</option>
             <option value="Cat">Put a cat up for adoption</option>
@@ -92,29 +93,52 @@ const Signup = ({emailPrefill, setEmailPrefill}) => {
           <button>Register</button>
         </form>
       ) : (
-      <div className="signup-page">
-        <form className="signup-form" onSubmit={handleSubmit}>
-          <h3>Sign up</h3>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <h3>Where cat lovers unite</h3>
+          <label for="email">Username</label>
           <input
+            id="email"
+            placeholder="your@email.com"
             type="email"
-            placeholder="email"
             ref={emailRef}
           />
+          <label for="password">Password</label>
           <input
+            id="password"
             type="password"
-            placeholder="password"
+            placeholder="must be 8 characters"
             ref={passwordRef}
           />
-          <select ref={profileTypeRef}>
-            <option value="Adopter">Adopt a cat</option>
-            <option value="Cat">Put a cat up for adoption</option>
-          </select>
-
-          <button>Register</button>
+          <label for="adoptOrCat">Are you looking to adopt or rehome a cat?</label>
+              <div className="select-profile-type">
+                <div className="custom-radio">
+                  <input
+                    id="adopt"
+                    type="radio"
+                    name="adoptOrCat"
+                    value="Adopter"
+                    ref={profileTypeRef}
+                  />
+                  <label for="adopt">
+                    Adopt
+                  </label>
+                </div>
+                <div className="custom-radio">
+                    <input
+                      id="rehome"
+                      type="radio"
+                      name="adoptOrCat"
+                      value="Cat"
+                      ref={profileTypeRef}
+                    />
+                  <label for="rehome">
+                    Rehome
+                  </label>
+                </div>
+              </div>
+          <button>SIGN UP</button>
         </form>
-
-      {res && <p className="response-text">{JSON.stringify(res)}</p>}
-      {err && <p className="error-text">{err}</p>}
       <div className="googleOauthButton">
         <GoogleLogin
           onSuccess={credentialResponse => {
@@ -124,11 +148,18 @@ const Signup = ({emailPrefill, setEmailPrefill}) => {
           onError={() => {
             console.log('Login Failed');
           }}
+          buttonText="Sign in with Google"
+          isSignedIn={false}
         />
-      </div>
-      </div>
+
+        {res && <p className="response-text">{JSON.stringify(res)}</p>}
+        {err && <p className="error-text">{err}</p>}
+        </div>
+        </div>
+      
       )}
-    </>
+      </div>
+    </div>
   );
 };
 
