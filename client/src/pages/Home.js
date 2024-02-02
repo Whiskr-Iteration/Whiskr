@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+//import { GoogleLogin } from '@react-oauth/google';
+//import { GoogleOAuthProvider } from '@react-oauth/google';
 // import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
@@ -79,7 +79,7 @@ const Home = ({setEmailPrefill, emailPrefill}) => {
               <button variant='contained'>Log in</button>
             </Link>
           </div>
-          <div className="googleOauthButton">
+          {/* <div className="googleOauthButton">
             <GoogleLogin
               onSuccess={credentialResponse => {
                 const idToken = credentialResponse.credential;
@@ -89,7 +89,7 @@ const Home = ({setEmailPrefill, emailPrefill}) => {
                 console.log('Login Failed');
               }}
             />
-          </div>
+          </div> */}
         </div>
       </div>
       )}
