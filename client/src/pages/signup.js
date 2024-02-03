@@ -112,30 +112,10 @@ const Signup = ({emailPrefill, setEmailPrefill}) => {
           />
           <label for="adoptOrCat">Are you looking to adopt or rehome a cat?</label>
               <div className="select-profile-type">
-                <div className="custom-radio">
-                  <input
-                    id="adopt"
-                    type="radio"
-                    name="adoptOrCat"
-                    value="Adopter"
-                    ref={profileTypeRef}
-                  />
-                  <label for="adopt">
-                    Adopt
-                  </label>
-                </div>
-                <div className="custom-radio">
-                    <input
-                      id="rehome"
-                      type="radio"
-                      name="adoptOrCat"
-                      value="Cat"
-                      ref={profileTypeRef}
-                    />
-                  <label for="rehome">
-                    Rehome
-                  </label>
-                </div>
+                  <select ref={profileTypeRef}>
+                    <option value="Adopter">Adopt a cat</option>
+                    <option value="Cat">Put a cat up for adoption</option>
+                  </select>
               </div>
           <button>SIGN UP</button>
         </form>
