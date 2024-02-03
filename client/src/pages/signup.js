@@ -1,82 +1,158 @@
-import React from "react";
-import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios"; // NOTE: JS library used to make HTTP requests from a browser; used here to fetch data (pins) from Atlas db
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import { GoogleLogin } from '@react-oauth/google';
+import cat from '../../assets/cat-2.png';
 
-const Signup = (googleUser) => {
+const Signup = ({emailPrefill, setEmailPrefill}) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const profileTypeRef = useRef();
-  const googleCredentials = googleUser;
 
-  console.log("googleUser in signup", googleUser);
+  // setting the current googleIdToken accessed 
+  // from google Oauth to be the ID Token
+  const [googleIdToken, setGoogleIdToken] = useState(null);
+  const [profileType, setProfileType] = useState(null);
 
-  // Response/error from server
   const [res, setRes] = useState(null);
   const [err, setErr] = useState(null);
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleProfile = (e) => {
     e.preventDefault();
+    setProfileType(profileTypeRef.current.value);
+  } 
 
-    const newUser = {
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-      profileType: profileTypeRef.current.value,
-    };
+  useEffect(() => {
+    if (googleIdToken && profileType) {
+      handleSubmit();
+    }
+  }, [googleIdToken, profileType])
 
-    // Make POST request to Atlas DB to add new user
+  const handleSubmit = async (e) => {
+    console.log(profileTypeRef)
+    if (e) {
+      e.preventDefault();
+    }
+    // Make POST request to Atlas DB to add a new user
     try {
-      const userResponse = await axios.post("/signup", newUser);
+      let userResponse;
+      if (googleIdToken) {
+        console.log('hi from googleIdToken')
+        const googleOauth = {
+          googleIdToken,
+          profileType
+        }
+        console.log(profileType, 'profileType in try on signup')
+        userResponse = await axios.post('/login', { googleOauth })
+      } else {
+        console.log('hi from e');
+        const newUser = {
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+          profileType: profileTypeRef.current.value,
+        };
+        userResponse = await axios.post("/login", newUser);
+      }
 
-      console.log("* New user profile created, _id: ", userResponse.data.id);
-      console.log(
-        "* New user profile created, _id: ",
-        typeof userResponse.data.id
-      );
+      console.log("* New user profile created, _id: ", userResponse.data._id);
       console.log("profileTypeRef", profileTypeRef.current.value);
 
       setRes(
-        `User ID Created: ${userResponse.data}.  Please proceed to log in page.`
+        `User ID Created: ${userResponse.data._id}.  Please proceed to the login page.`
       );
-      setErr(null);
-      navigate("/login");
-    } catch (err) {
-      console.log("* Error from server: ", err.response.data);
-      setRes(null);
-      setErr(err.response.data);
+
+      if (userResponse.data.hasAdopterOrCatProfile) {
+        console.log('ALREADY HAVE A PROFILE')
+        navigate('/login');
+      }
+      setEmailPrefill(userResponse.data.userEmail);
+      console.log(userResponse, 'userResponse');
+      if (userResponse.data.profileType === 'Cat' && userResponse.data.hasAdopterOrCatProfile === false) {
+        navigate('/create-account-cat');
+      } else if (userResponse.data.profileType === 'Adopter' && userResponse.data.hasAdopterOrCatProfile === false) {
+        navigate('/createAccountAdopter');
+      }
+
+    } catch (error) {
+      console.log("* Error from the server: ", error.response?.data || "Unknown Error Post");
+      setErr(error.response?.data || "Unknown Error Post");
     }
   };
 
   return (
     <div className="signup-page">
-      <form className="signup-form" onSubmit={handleSubmit}>
-        <h3>Sign up</h3>
-        <input
-          type="email"
-          placeholder="email"
-          ref={emailRef}
-          defaultValue={googleCredentials ? googleCredentials.email : ""}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          ref={passwordRef}
-          defaultValue={googleCredentials ? googleCredentials.password : ""}
-        />
-        <select ref={profileTypeRef}>
-          <option value="Adopter">Adopt a cat</option>
-          <option value="Cat">Put a cat up for adoption</option>
-        </select>
+      <div className="signup-form">
+      {googleIdToken ? (
+        <form onSubmit={handleProfile}>
+          <h3 class="google-oauth-h3"><img src={cat} />Just one more step!</h3>
+          <label>Are you looking to rehome or adopt?</label>
+          <select ref={profileTypeRef}>
+            <option value="Adopter">Adopt a cat</option>
+            <option value="Cat">Put a cat up for adoption</option>
+          </select>
 
-        <button>Register</button>
-      </form>
+          <button class="google-oauth-button">SIGN UP</button>
+        </form>
+      ) : (
+      <div>
+        <form onSubmit={handleSubmit}>
+          <h3>Where cat lovers unite</h3>
+          <label htmlFor="email">Username</label>
+          <input
+            id="email"
+            placeholder="your@email.com"
+            type="email"
+            ref={emailRef}
+          />
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="must be 8 characters"
+            ref={passwordRef}
+          />
+          <label htmlFor="adoptOrCat">Are you looking to adopt or rehome a cat?</label>
+              <div className="select-profile-type">
+                  <select ref={profileTypeRef}>
+                    <option value="Adopter">Adopt a cat</option>
+                    <option value="Cat">Put a cat up for adoption</option>
+                  </select>
+              </div>
+          <button>SIGN UP</button>
+        </form>
+        <p>Already have an account? <Link to="/login"><span >Login</span></Link></p>
+        <div className="separator">
+          <div className="line"></div>
+          <p>or</p>
+          <div className="line"></div>
+        </div>
 
-      {res && <p className="response-text">{JSON.stringify(res)}</p>}
-      {err && <p className="error-text">{err}</p>}
+      <div className="googleOauthButton">
+        <GoogleLogin
+          onSuccess={credentialResponse => {
+            const idToken = credentialResponse.credential;
+            setGoogleIdToken(idToken);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+          buttonText="Sign in with Google"
+          isSignedIn={false}
+        />
+
+        {res && <p className="response-text">{JSON.stringify(res)}</p>}
+        {err && <p className="error-text">{err}</p>}
+        </div>
+        </div>
+      
+      )}
+      </div>
     </div>
   );
 };
 
 export default Signup;
+
+
