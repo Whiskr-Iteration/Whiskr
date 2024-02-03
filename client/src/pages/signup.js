@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { GoogleLogin } from '@react-oauth/google';
+import cat from '../../assets/cat-2.png';
 
 const Signup = ({emailPrefill, setEmailPrefill}) => {
   const emailRef = useRef();
@@ -85,32 +86,34 @@ const Signup = ({emailPrefill, setEmailPrefill}) => {
       <div className="signup-form">
       {googleIdToken ? (
         <form onSubmit={handleProfile}>
+          <h3 class="google-oauth-h3"><img src={cat} />Just one more step!</h3>
+          <label>Are you looking to rehome or adopt?</label>
           <select ref={profileTypeRef}>
             <option value="Adopter">Adopt a cat</option>
             <option value="Cat">Put a cat up for adoption</option>
           </select>
 
-          <button>Register</button>
+          <button class="google-oauth-button">SIGN UP</button>
         </form>
       ) : (
       <div>
         <form onSubmit={handleSubmit}>
           <h3>Where cat lovers unite</h3>
-          <label for="email">Username</label>
+          <label htmlFor="email">Username</label>
           <input
             id="email"
             placeholder="your@email.com"
             type="email"
             ref={emailRef}
           />
-          <label for="password">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             id="password"
             type="password"
             placeholder="must be 8 characters"
             ref={passwordRef}
           />
-          <label for="adoptOrCat">Are you looking to adopt or rehome a cat?</label>
+          <label htmlFor="adoptOrCat">Are you looking to adopt or rehome a cat?</label>
               <div className="select-profile-type">
                   <select ref={profileTypeRef}>
                     <option value="Adopter">Adopt a cat</option>
@@ -119,6 +122,13 @@ const Signup = ({emailPrefill, setEmailPrefill}) => {
               </div>
           <button>SIGN UP</button>
         </form>
+        <p>Already have an account? <Link to="/login"><span >Login</span></Link></p>
+        <div className="separator">
+          <div className="line"></div>
+          <p>or</p>
+          <div className="line"></div>
+        </div>
+
       <div className="googleOauthButton">
         <GoogleLogin
           onSuccess={credentialResponse => {

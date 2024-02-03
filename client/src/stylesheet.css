@@ -1,7 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
 /* --- REUSEABLE ELEMENTS - USED ON MORE THAN ONE PAGE --- */
 :root {
+
+  /* font sizes */
   --font-family: 'Quicksand', sans-serif;
+  --font-size-label: 18px;
+  --font-size-input: 18px;
+  --font-size-placeholder: 18px;
+  --font-size-button: 22px;
+  --font-size-h3: 36px;
+  --font-size-paragraph: 14px;
+  --font-size-h1: 48px;
+  --font-size-li: 18px;
+
+  /* colors */
+  --primary-color: rgba(255, 99, 0, 1);
+  --secondary-color: rgb(255, 150, 84);
 }
 
 body::before {
@@ -29,21 +44,26 @@ body {
 
 .navbar {
   background: white;
+
   /* padding-bottom: 100px; */
   h1 {
     margin: 20px;
     color: #ff6300;
     font-family: 'Pacifico',
       cursive;
+    font-size: var(--font-size-h3);
   }
+
   a {
     color: #000;
     text-decoration: none;
     font-weight: bolder;
   }
+
   h4 {
     font-weight: 500;
   }
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -56,6 +76,7 @@ body {
     margin: 5px;
     padding: 5px;
   }
+
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -65,32 +86,35 @@ body {
 
 
 h3 {
-  font-size: 36px;
+  font-size: var(--font-size-h3);
   font-weight: 800;
 }
+
 button {
-  margin: 30px 0px;
+  /* margin-top: 30px; */
   border-radius: 30px;
   border: none;
   font-weight: 600;
   font-family: var(--font-family);
-  font-size: 24px;
-  background: #ff6300;
-  color: #fff; /* Text color */
+  font-size: var(--font-size-button);
+  background: var(--primary-color);
+  color: #fff;
+  /* Text color */
 }
 
 button:hover {
-  background: linear-gradient(to bottom, #307676, #005070);
+  background: var(--secondary-color);
 }
 
 input {
   width: 100%;
-  padding: 5px 10px;
-  font-size: 24px;
-  margin-bottom: 20px;
+  padding: 5px 20px;
+  font-size: var(--font-size-input);
+  margin-bottom: 30px;
   border: none;
-  border-bottom: 2.5px solid black;
+  border-bottom: 2px solid black;
   box-sizing: border-box;
+  outline: none;
 }
 
 input::placeholder {
@@ -99,19 +123,23 @@ input::placeholder {
   font-family: var(--font-family);
 }
 
+
 label {
-  color: #5C5C5C;
-  font-size: 18px;
+  color: #434242;
+  font-size: var(--font-size-label);
 }
 
 select {
   width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
+  padding: 8px 20px;
+  margin-top: 10px;
+  margin-bottom: 30px;
   box-sizing: border-box;
-  border-radius: 10px;
-  background-color: rgb(165, 162, 162);
-  font-weight: bolder;
+  border: 1px solid #000000;
+  background: none;
+  font-weight: 600;
+  font-family: var(--font-family);
+  font-size: var(--font-size-input);
 }
 
 /* Server Response Text */
@@ -121,7 +149,7 @@ select {
   top: 550px;
   /* Styling */
   font-family: 'Courier New', Courier, monospace;
-  font-size: 16px;
+  font-size: var(--font-size-paragraph);
   color: rgb(0, 199, 53);
   background: black;
 }
@@ -133,7 +161,7 @@ select {
   top: 550px;
   /* Styling */
   font-family: 'Courier New', Courier, monospace;
-  font-size: 16px;
+  font-size: var(--font-size-paragraph);
   color: rgb(255, 124, 124);
   background: black;
 }
@@ -142,8 +170,9 @@ select {
 /* HOME PAGE */
 .slogan-signup-login-container {
   h1 {
-    font-size:48px;
+    font-size: var(--font-size-h1);
   }
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -160,16 +189,18 @@ select {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   button {
     height: 50px;
     width: 250px;
-    font-size: 21px;
+    font-size: var(--font-size-buttons);
     border-radius: 30px;
     /* Gradient Background */
-    background: #f4496f;
+    background: var(--primary-color);
     /* Text Color */
     color: #fff;
   }
+
   button:hover {
     background: #f4496f;
   }
@@ -188,23 +219,77 @@ select {
   /* align-items: center; */
   /* justify-content: center; */
   border-radius: 28px;
-  box-sizing: border-box; /* Include padding and border in the total width and height */
+  box-sizing: border-box;
+
+  /* Include padding and border in the total width and height */
   label {
     margin-top: 10px;
   }
+
   button {
     width: 100%;
     padding: 10px;
+    font-size: var(--font-size-button);
   }
+
+  p {
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  span {
+    color: black;
+    text-decoration: 2px solid underline;
+    line-height: 1.5;
+  }
+
+  span:hover {
+    color: var(--primary-color);
+
+  }
+
+  img {
+    height: 80px;
+  }
+}
+
+.google-oauth-h3 {
+  font-size: 33px;
+  margin-top: 0px;
+  margin-bottom: 30px;
+}
+
+.google-oauth-button {
+  margin-bottom: 30px;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+
+  p {
+    margin: 0px;
+  }
+}
+
+.line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #000;
+  /* Specify the line color */
+  margin: 0 10px;
+  /* Adjust the spacing between the line and text */
 }
 
 .select-profile-type {
   display: flex;
+
   label {
     color: black;
     font-weight: 600;
     display: flex;
-    font-size: 24px;
+    font-size: var(--font-size-label);
   }
 }
 
@@ -229,16 +314,16 @@ select {
   position: absolute;
   left: 0;
   top: 0;
-  margin-top: 5px;
+  margin-top: 2px;
   width: 20px;
   height: 20px;
   border: 1px solid black;
   background-color: white;
   box-sizing: border-box;
-  
+
 }
 
-.custom-radio input:checked + label:before {
+.custom-radio input:checked+label:before {
   content: '\2713';
   font-size: 35px;
   color: #00FF29;
@@ -252,16 +337,26 @@ select {
 
 /* LOG IN PAGE */
 .login-page {
-  display: flex; /* Use flex display to control the layout */
-  flex-direction: column; /* Stack child elements vertically */
-  align-items: center; /* Center child elements horizontally */
-  justify-content: center; /* Center child elements vertically */
-  height: 400px; /* Set a fixed height for signup-elements */
-  width: 100%; /* Set the width to 100% to fill the parent container */
-  margin: auto; /* Center the element horizontally if needed */
-  padding: 16px; /* Add padding for spacing */
-  box-sizing: border-box; /* Include padding and border in the total width and height */
+  display: flex;
+  /* Use flex display to control the layout */
+  flex-direction: column;
+  /* Stack child elements vertically */
+  align-items: center;
+  /* Center child elements horizontally */
+  justify-content: center;
+  /* Center child elements vertically */
+  height: 400px;
+  /* Set a fixed height for signup-elements */
+  width: 100%;
+  /* Set the width to 100% to fill the parent container */
+  margin: auto;
+  /* Center the element horizontally if needed */
+  padding: 16px;
+  /* Add padding for spacing */
+  box-sizing: border-box;
+  /* Include padding and border in the total width and height */
 }
+
 .login-form {
   display: flex;
   flex-direction: column;
@@ -270,6 +365,7 @@ select {
   justify-content: space-between;
   padding: 8px;
   border-radius: 5px;
+
   Button {
     size: large;
     width: 300px;
@@ -294,14 +390,14 @@ select {
   /* Positioning */
   position: absolute;
   left: 0%;
-  top: 10vh;
+  /* top: 10vh; */
   /* Sizing */
   width: 100%;
-  height: 90%;
+  height: 100%;
   /* Prevent resizing on card swipes */
   overflow: hidden;
   /* Styling */
-  background-color: rgba(0, 0, 0, 0.747);
+  background: linear-gradient(#FFC1AD, #F97349);
 }
 
 /* SIDE BAR ON CARDS PAGE */
@@ -313,7 +409,7 @@ select {
   height: 99%;
   width: 310px;
   /* Styling */
-  background-color: rgba(22, 22, 22, 0.977);
+  background: linear-gradient(#FFC1AD, #F97349);
   /* Border */
   border: none;
 }
@@ -323,11 +419,13 @@ select {
   /* Organize Elements */
   display: flex;
   flex-direction: column;
-  margin-left: 25px;
+  /* margin-left: 25px; */
   /* Set a fixed height and make it scrollable */
   height: 100%;
   max-height: 86%;
   overflow-y: auto;
+  background: rgba(255, 193, 173, 0.5);
+
   /* Style the scrollbar */
   &::-webkit-scrollbar {
     width: 8px;
@@ -347,21 +445,26 @@ select {
 .matches {
   text-align: center;
 }
+
 .matches p {
-  font-size: 14px;
+  font-size: var(--font-size-paragraph);
   margin-top: 14px;
   margin-bottom: -3px;
   /* margin-left: 30%; */
 }
+
 .matches img {
   /* Sizing */
   width: 80px;
   height: 80px;
   /* Styling */
-  object-fit: cover; /* Maintain the aspect ratio and cover the entire container */
-  border-radius: 50%; /* Make the image circular */
+  object-fit: cover;
+  /* Maintain the aspect ratio and cover the entire container */
+  border-radius: 50%;
+  /* Make the image circular */
   /* Positioning */
-  margin-top: 8px; /* Add some spacing between text and image */
+  margin-top: 8px;
+  /* Add some spacing between text and image */
 }
 
 /* MESSAGES TAB */
@@ -370,8 +473,9 @@ select {
   display: flex;
   flex-direction: column;
   padding: 25px;
+
   li {
-    font-size: 20px;
+    font-size: var(--font-size-li);
     margin-top: 30px;
   }
 }
@@ -383,6 +487,7 @@ select {
   flex-direction: row;
   justify-content: space-evenly;
   margin-top: -53px;
+
   Button {
     margin-top: 50px;
     width: 100%;
@@ -402,9 +507,11 @@ select {
   max-width: 260px;
   height: 300px;
 }
+
 .swipe {
   position: absolute;
 }
+
 .card {
   /* Positioning */
   position: relative;
@@ -414,22 +521,27 @@ select {
   height: 630px;
   /* Styling */
   background-color: #fff;
-  box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3); */
   background-size: cover;
   background-position: center;
 }
+
 .card-contents {
   /* Sizing */
   height: 600px;
   /* Styling */
   overflow-y: scroll;
   border-radius: 20px;
+
   /* Scroll Bar Styling */
   &::-webkit-scrollbar {
-    width: 0.5em; /* Adjust width as needed */
+    width: 0.5em;
+    /* Adjust width as needed */
   }
+
   &::-webkit-scrollbar-thumb {
-    background-color: transparent; /* Make the thumb transparent */
+    background-color: transparent;
+    /* Make the thumb transparent */
   }
 }
 
@@ -449,15 +561,15 @@ select {
   padding-bottom: 10px;
   /* Styling */
   background: linear-gradient(to bottom, #4cb8b8, #0184b8);
+
   label {
-    font-size: 20px;
+    font-size: var(--font-size-paragraph);
   }
 }
 
 .card-fetched-data {
   font-family: 'Franklin Gothic Medium';
-  font-size: 16px;
+  font-size: var(--font-size-paragraph);
   margin-top: 8px;
   margin-bottom: 30px;
 }
-

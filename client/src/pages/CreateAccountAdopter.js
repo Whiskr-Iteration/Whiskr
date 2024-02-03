@@ -50,8 +50,9 @@ const CreateAccountAdopter = ({setEmailPrefill, emailPrefill}) => {
   };
 
   return (
-    <div>
-      <form className='create-profile-page' onSubmit={handleSubmit}>
+    <div className="signup-page">
+      <div className="signup-form">
+      <form  onSubmit={handleSubmit}>
         <h3>Create your adopter profile!</h3>
         <label>Email: </label>
         <input type='email' placeholder='email' ref={emailRef} defaultValue={emailPrefill ? emailPrefill : ''}/>
@@ -74,6 +75,7 @@ const CreateAccountAdopter = ({setEmailPrefill, emailPrefill}) => {
         <button>Create Profile</button>
         {/* </Link> */}
       </form>
+    </div>
     </div>
   );
 };

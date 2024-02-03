@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios'; // NOTE: JS library used to make HTTP requests from a browser; used here to fetch data (pins) from Atlas db
 import { GoogleLogin } from '@react-oauth/google';
 
@@ -89,15 +89,23 @@ const Login = ({setEmailPrefill}) => {
 
 
   return (
-    <div className='login-page'>
-      <form className='login-form' onSubmit={handleSubmit}>
+    <div className="signup-page">
+      <div className="signup-form">
+      <form onSubmit={handleSubmit}>
         <h3>Log In</h3>
-
-        <input type='email' placeholder='email' ref={emailRef} />
+        <label htmlFor="email">Username</label>
+        <input id="email" type='email' placeholder='your@email.com' ref={emailRef} />
+        <label htmlFor="password">Password</label>
         <input type='password' placeholder='password' ref={passwordRef} />
 
         <button type='submit'>Log in</button>
       </form>
+        <p>Don't have an account? <Link to="/signup"><span >Sign up</span></Link></p>
+        <div className="separator">
+          <div className="line"></div>
+          <p>or</p>
+          <div className="line"></div>
+        </div>
       {res && <p className='response-text'>{JSON.stringify(res)}</p>}
       {err && <p className='error-text'>{JSON.stringify(err)}</p>}
       <div className="googleOauthButton">
@@ -111,6 +119,7 @@ const Login = ({setEmailPrefill}) => {
           }}
         />
       </div>
+    </div>
     </div>
   );
 };
